@@ -6,11 +6,6 @@
 <template>
 	<MDXProvider>
 		<div class="content">
-			<div class="nav">
-				<RouterLink to="/test1">测试1</RouterLink>
-				<RouterLink to="/test2">测试2</RouterLink>
-				<RouterLink to="/test3">测试3</RouterLink>
-			</div>
 			<div class="markdown-body">
 				<RouterView></RouterView>
 			</div>
@@ -25,7 +20,8 @@
 		tab-size: 2; /* 控制 Tab 显示宽度 */
 	}
 	.content {
-		max-width: 1200px;
+		max-width: 1000px;
+    padding: 20px 30px;
 		margin: 0 auto;
 	}
 	.content .nav {
