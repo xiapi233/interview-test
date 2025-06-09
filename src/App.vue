@@ -1,15 +1,23 @@
 <script setup lang="ts">
 	import { MDXProvider } from '@mdx-js/vue'
 	import { RouterView } from 'vue-router'
+	import { Playground } from '@vue/sfc-playground'
+	import { ref } from 'vue'
+
+	const hash = ref(window.location.hash)
+	window.addEventListener('hashchange', () => {
+		hash.value = location.hash
+	})
 </script>
 
 <template>
 	<MDXProvider>
-		<div class="content">
-			<div class="markdown-body">
+		<div class="markdown-body">
+			<div class="content">
 				<RouterView></RouterView>
 			</div>
 		</div>
+		<Playground v-if="hash.length"></Playground>
 	</MDXProvider>
 </template>
 
@@ -20,8 +28,7 @@
 		tab-size: 2; /* 控制 Tab 显示宽度 */
 	}
 	.content {
-		max-width: 1000px;
-    padding: 20px 30px;
+		padding: 20px 30px;
 		margin: 0 auto;
 	}
 	.content .nav {

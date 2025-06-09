@@ -1,0 +1,28 @@
+{
+	"name": "@vue/sfc-playground",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+  "main": "./index.ts",
+	"exports": {
+		".": {
+			"import": "./index.ts",
+			"types": "./index.ts"
+		}
+	},
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"serve": "vite preview"
+	},
+	"devDependencies": {
+		"@vitejs/plugin-vue": "catalog:",
+		"vite": "catalog:"
+	},
+	"dependencies": {
+		"@vue/repl": "^4.4.2",
+		"file-saver": "^2.0.5",
+		"jszip": "^3.10.1",
+		"vue": "catalog:"
+	}
+}
