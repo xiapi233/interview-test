@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 
 export async function handler(req, res) {
 	if (req.method !== 'POST') {
-		return new Response('Method not allowed', { status: 405 })
+		return new Response('Method not allowed')
 	}
 
 	const resend = new Resend('re_KrDWt8wr_EGbcp12QM5qa5mFi5PAaTXx7')
@@ -11,6 +11,7 @@ export async function handler(req, res) {
 	try {
 		const { to, subject, html } = JSON.parse(req.body)
 
+		console.log('Sending email:', req.body)
 		const response = await resend.emails.send({
 			from: 'no-reply@yourdomain.com', // 使用你在 Resend 验证的域名
 			to: to,
