@@ -1,37 +1,29 @@
-// netlify/functions/send-email.js
 import { Resend } from 'resend'
 
-export async function handler(req, res) {
-	if (req.method !== 'POST') {
+export async function handler(req) {
+	if (req.httpMethod !== 'POST' || !req.body) {
 		return {
-			statusCode: 200,
-			body: '{"message": "This endpoint only accepts POST requests"}'
+			statusCode: 400,
+			body: JSON.stringify('invalid request'),
+      headers: { 'Access-Control-Allow-Origin': '*' }
 		}
 	}
 
 	const resend = new Resend('re_KrDWt8wr_EGbcp12QM5qa5mFi5PAaTXx7')
 
 	try {
-		const { to, subject, html } = JSON.parse(req.body)
-
-		console.log('Sending email:', req.body)
-		const response = await resend.emails.send({
-			from: 'no-reply@yourdomain.com', // 使用你在 Resend 验证的域名
-			to: to,
-			subject: subject,
-			html: html
-		})
+		const response = await resend.emails.send(JSON.parse(req.body))
 
 		return {
 			body: JSON.stringify({ message: 'Email sent successfully', response }),
 			statusCode: 200,
-			headers: { 'Content-Type': 'application/json' }
+			headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
 		}
 	} catch (error) {
 		return {
 			body: JSON.stringify({ error: 'Failed to send email', details: error.message }),
 			statusCode: 500,
-			headers: { 'Content-Type': 'application/json' }
+			headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
 		}
 	}
 }

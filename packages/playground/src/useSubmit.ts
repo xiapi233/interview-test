@@ -1,22 +1,5 @@
-// import { Resend } from 'resend'
-
-// const resend = new Resend('re_KrDWt8wr_EGbcp12QM5qa5mFi5PAaTXx7')
-
 export function useSubmit() {
-	const submit = async () => {
-		// const resend = new Resend('re_KrDWt8wr_EGbcp12QM5qa5mFi5PAaTXx7')
-
-		// resend.emails.send({
-		//   headers:{
-
-		//   },
-		// 	from: 'onboarding@resend.dev',
-		// 	to: 'abcliudada@gmail.com',
-		// 	subject: 'Hello World',
-		// 	html: '<p>Congrats on sending your <strong>first email</strong>!</p>'
-		// })
-		// 前端代码
-		// async function sendEmail(emailData: any) {
+	const submit = async (name: string, html: string) => {
 		try {
 			const response = await fetch('/.netlify/functions/send-email', {
 				method: 'POST',
@@ -26,8 +9,8 @@ export function useSubmit() {
 				body: JSON.stringify({
 					from: 'onboarding@resend.dev',
 					to: 'abcliudada@gmail.com',
-					subject: 'Hello World',
-					html: '<p>Congrats on sending your <strong>first email</strong>!</p>'
+					subject: `面试题-[${name}]`,
+					html: html
 				})
 			})
 
@@ -36,7 +19,6 @@ export function useSubmit() {
 		} catch (error) {
 			console.error('Error sending email:', error)
 		}
-		// }
 	}
 
 	return {

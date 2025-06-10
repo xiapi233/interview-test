@@ -6,6 +6,7 @@
 	import Download from './icons/Download.vue'
 	import Reload from './icons/Reload.vue'
 	import { useSubmit } from './useSubmit'
+	import { NButton } from 'naive-ui'
 
 	const props = defineProps<{
 		store: ReplStore
@@ -22,9 +23,9 @@
 		emit('toggle-theme', cls.contains('dark'))
 	}
 	const { submit } = useSubmit()
+
 	function handleSubmit() {
-		// emit('toggle-prod')
-		submit()
+		submit('张三', window.location.href)
 	}
 </script>
 
@@ -34,6 +35,12 @@
 			<span>Interview Test Playground</span>
 		</h1>
 		<div class="links">
+			<NButton type="success" @click="handleSubmit">
+				<template #icon>
+					<Icon icon="material-symbols-light:arrow-downward"></Icon>
+				</template>
+				提交
+			</NButton>
 			<button
 				:title="`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`"
 				class="toggle-dark"
@@ -48,7 +55,6 @@
 			<button title="Download project files" class="download" @click="downloadProject(store)">
 				<Download />
 			</button>
-			<button class="toggle-prod" @click="handleSubmit">提交</button>
 		</div>
 	</nav>
 </template>
