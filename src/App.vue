@@ -36,7 +36,7 @@
 			</div>
 			<NButton class="m-6 mt-2 " type="success" @click="scrollToEnd">
 				<template #icon>
-					<Icon icon="material-symbols-light:arrow-downward"></Icon>
+					<Icon class="animate-bounce" icon="material-symbols-light:arrow-downward"></Icon>
 				</template>
 				Coding in Playground
 			</NButton>
