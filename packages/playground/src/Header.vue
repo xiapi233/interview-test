@@ -5,6 +5,7 @@
 	import Moon from './icons/Moon.vue'
 	import Download from './icons/Download.vue'
 	import Reload from './icons/Reload.vue'
+	import { useSubmit } from './useSubmit'
 
 	const props = defineProps<{
 		store: ReplStore
@@ -20,12 +21,11 @@
 		localStorage.setItem('vue-sfc-playground-prefer-dark', String(cls.contains('dark')))
 		emit('toggle-theme', cls.contains('dark'))
 	}
-  // function handleSubmit() {
-  //   // emit('toggle-prod')   
-  //   const link = document.createElement('a')
-  //   link.href = `mailto:y9527347@gmail.com?subject=面试题提交 - [你的姓名] - [岗位名称]&body=${location.href}`
-  //   link.click()
-  // }
+	const { submit } = useSubmit()
+	function handleSubmit() {
+		// emit('toggle-prod')
+		submit()
+	}
 </script>
 
 <template>
@@ -48,7 +48,7 @@
 			<button title="Download project files" class="download" @click="downloadProject(store)">
 				<Download />
 			</button>
-			<!-- <button class="toggle-prod" @click="handleSubmit">提交</button> -->
+			<button class="toggle-prod" @click="handleSubmit">提交</button>
 		</div>
 	</nav>
 </template>
@@ -69,8 +69,8 @@
 		box-sizing: border-box;
 		padding: 0 1em;
 		background-color: var(--bg);
-    border-top: 3px solid var(--green);
-    border-bottom: 1px solid var(--border);
+		border-top: 3px solid var(--green);
+		border-bottom: 1px solid var(--border);
 		/* box-shadow: 0 0 4px ; */
 		position: relative;
 		z-index: 999;

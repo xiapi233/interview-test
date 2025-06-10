@@ -48,6 +48,7 @@
 		},
 		hash
 	)
+  // @ts-ignore
 	globalThis.store = store
 
 	// persist state
