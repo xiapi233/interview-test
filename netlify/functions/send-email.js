@@ -3,7 +3,10 @@ import { Resend } from 'resend'
 
 export async function handler(req, res) {
 	if (req.method !== 'POST') {
-		return new Response('Method not allowed')
+		return {
+			statusCode: 200,
+			body: '{"message": "This endpoint only accepts POST requests"}'
+		}
 	}
 
 	const resend = new Resend('re_KrDWt8wr_EGbcp12QM5qa5mFi5PAaTXx7')
@@ -19,14 +22,16 @@ export async function handler(req, res) {
 			html: html
 		})
 
-		return new Response(JSON.stringify({ message: 'Email sent successfully', response }), {
-			status: 200,
+		return {
+			body: JSON.stringify({ message: 'Email sent successfully', response }),
+			statusCode: 200,
 			headers: { 'Content-Type': 'application/json' }
-		})
+		}
 	} catch (error) {
-		return new Response(JSON.stringify({ error: 'Failed to send email', details: error.message }), {
-			status: 500,
+		return {
+			body: JSON.stringify({ error: 'Failed to send email', details: error.message }),
+			statusCode: 500,
 			headers: { 'Content-Type': 'application/json' }
-		})
+		}
 	}
 }
