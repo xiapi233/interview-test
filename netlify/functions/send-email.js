@@ -1,18 +1,24 @@
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 
 export async function handler(req) {
 	if (req.httpMethod !== 'POST' || !req.body) {
 		return {
 			statusCode: 400,
 			body: JSON.stringify('invalid request'),
-      headers: { 'Access-Control-Allow-Origin': '*' }
+			headers: { 'Access-Control-Allow-Origin': '*' }
 		}
 	}
 
-	const resend = new Resend('re_KrDWt8wr_EGbcp12QM5qa5mFi5PAaTXx7')
+	const transporter = nodemailer.createTransport({
+		service: 'gmail',
+		auth: {
+			user: 'abcliudada@gmail.com', // 你的 Gmail 地址
+			pass: 'srdq ptwr higc ttuf' // 刚刚生成的 App Password
+		}
+	})
 
 	try {
-		const response = await resend.emails.send(JSON.parse(req.body))
+		const response = await transporter.sendMail(JSON.parse(req.body))
 
 		return {
 			body: JSON.stringify({ message: 'Email sent successfully', response }),

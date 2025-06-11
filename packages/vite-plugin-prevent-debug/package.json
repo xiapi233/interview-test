@@ -1,0 +1,50 @@
+{
+	"name": "@nexus/vite-plugin-prevent-debug",
+	"version": "1.0.0",
+	"description": "Preventing debugging",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"module": "dist/index.js",
+	"type": "module",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts",
+			"require": "./dist/index.cjs"
+		}
+	},
+	"scripts": {
+		"postinstall": "pnpm run build",
+		"dev": "pnpm clean && tsup src/index.ts --publicDir src/client --watch --dts --format esm",
+		"build": "pnpm clean && tsup src/index.ts --dts --env.NODE_ENV production --format esm --publicDir src/client&& pnpm clean-up",
+		"clean": "rimraf dist",
+		"clean-up": "rimraf tsconfig.tsbuildinfo",
+		"test:dev": "vite dev",
+		"test:build": "vite build"
+	},
+	"files": [
+		"dist"
+	],
+	"keywords": [
+		"vite",
+		"vite-plugin",
+		"plugin",
+		"prevent-debug",
+		"debug"
+	],
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "catalog:",
+		"@types/uglify-js": "^3.17.1",
+		"rimraf": "^4.4.0",
+		"tsup": "^8.0.1",
+		"typescript": "catalog:",
+		"vite": "catalog:"
+	},
+	"peerDependencies": {
+		"vite": "*"
+	},
+	"dependencies": {
+		"uglify-js": "^3.17.4"
+	}
+}

@@ -19,9 +19,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>skylinetw-test</title>
 		<script>
-			const savedPreferDark = localStorage.getItem('vue-sfc-playground-prefer-dark') || 'false'
-			if (savedPreferDark === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
-				document.documentElement.classList.add('dark')
+			if (!window.location.href.includes('localhost')) {
+				const handler = (event) => {
+					event.preventDefault()
+					event.returnValue = ''
+				}
+
+				window.addEventListener('beforeunload', handler)
 			}
 		</script>
 	</head>

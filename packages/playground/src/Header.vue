@@ -5,58 +5,169 @@
 	import Moon from './icons/Moon.vue'
 	import Download from './icons/Download.vue'
 	import Reload from './icons/Reload.vue'
-	import { useSubmit } from './useSubmit'
-	import { NButton } from 'naive-ui'
+	import { useSubmit } from './hooks/useSubmit'
+	import { NButton, NModal, NForm, NCard, NInput, NFormItem, NAlert } from 'naive-ui'
+	import { Icon } from '@iconify/vue'
+	import { useEventListener, useSessionStorage } from '@vueuse/core'
+	import { ref, useTemplateRef } from 'vue'
+	import { useDateFormat, useNow } from '@vueuse/core'
+	import { useLeaveWindowCounter } from './hooks/useLeaveWindowCounter'
 
 	const props = defineProps<{
 		store: ReplStore
 		theme: 'dark' | 'light'
 	}>()
-	const emit = defineEmits(['toggle-theme', 'toggle-ssr', 'toggle-prod', 'toggle-autosave', 'reload-page'])
+	const emit = defineEmits(['toggle-theme', 'reload-page'])
 
+	const formatted = useDateFormat(useNow(), 'YYYY-MM-DD HH:mm:ss')
+	const startTime = useSessionStorage('playground-test-start-time', formatted.value)
+	const state = useSessionStorage('playground-serialized-state', '')
+	const isSubmited = useSessionStorage('playground-has-submitted', false)
+	const typeCount = useSessionStorage('playground-type-count', 0)
+	const leaveWindowCount = useSessionStorage('playground-leave-window-count', 0)
+
+	useLeaveWindowCounter(leaveWindowCount)
+
+	useEventListener('keydown', () => {
+		typeCount.value += 1
+	})
+	const showSubmitModal = ref(false)
 	const { store } = props
 
 	function toggleDark() {
-		const cls = document.documentElement.classList
-		cls.toggle('dark')
-		localStorage.setItem('vue-sfc-playground-prefer-dark', String(cls.contains('dark')))
-		emit('toggle-theme', cls.contains('dark'))
+		emit('toggle-theme')
 	}
-	const { submit } = useSubmit()
+	const { submit, isLoading } = useSubmit()
 
+	const formValue = ref({
+		username: ''
+	})
 	function handleSubmit() {
-		submit('张三', window.location.href)
+		formRef.value?.validate(async (error) => {
+			if (!error) {
+				const now = useNow()
+				const submitTime = useDateFormat(now, 'YYYY-MM-DD HH:mm:ss')
+				const titleTime = useDateFormat(now, 'YYYY-MM-DD')
+				const time = Math.floor((new Date().getTime() - new Date(startTime.value).getTime()) / 60000)
+
+				await submit(
+					`${titleTime.value} - 面试题 - [${formValue.value.username}]`,
+					[
+						`<p>面试者姓名: ${formValue.value.username}</p>`,
+						`<p>开始时间: ${startTime.value}</p>`,
+						`<p>提交时间: ${submitTime.value}</p>`,
+						`<p>用时: ${time}分钟</p>`,
+						`<p>键入次数: ${typeCount.value}</p>`,
+						`<p>离开窗口次数: ${leaveWindowCount.value}</p>`,
+						`<hr />`,
+						`<p>在线预览链接: <a href="${window.location.href + state.value}">Playground</a></p>`
+					].join('\n')
+				)
+				isSubmited.value = true
+				showSubmitModal.value = false
+			}
+		})
+	}
+
+	const formRef = useTemplateRef<InstanceType<typeof NForm>>('formRef')
+
+	function handleScrollToTop() {
+		const content = document.documentElement
+		if (content) {
+			content.scrollTo({
+				top: 0,
+				behavior: 'smooth'
+			})
+		}
 	}
 </script>
 
 <template>
-	<nav>
-		<h1>
-			<span>Interview Test Playground</span>
-		</h1>
-		<div class="links">
-			<NButton type="success" @click="handleSubmit">
+	<nav class="flex items-center justify-between px-4 py-2 bg-white dark:bg-[#1a1a1a]">
+		<div class="title flex space-x-6">
+			<NButton @click="handleScrollToTop" text size="large">
 				<template #icon>
-					<Icon icon="material-symbols-light:arrow-downward"></Icon>
+					<Icon icon="material-symbols:arrow-upward-rounded" />
+				</template>
+			</NButton>
+			<h1 class="text-xl font-semibold">
+				<span>Interview Test Playground</span>
+			</h1>
+		</div>
+		<div class="buttons flex space-x-4">
+			<NButton type="success" :disabled="isSubmited" @click="showSubmitModal = true">
+				<template #icon>
+					<Icon icon="material-symbols:local-post-office-rounded"></Icon>
 				</template>
 				提交
 			</NButton>
-			<button
-				:title="`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`"
-				class="toggle-dark"
-				@click="toggleDark"
-			>
-				<Sun class="light" />
-				<Moon class="dark" />
-			</button>
-			<button title="Reload page" class="reload" @click="$emit('reload-page')">
-				<Reload />
-			</button>
-			<button title="Download project files" class="download" @click="downloadProject(store)">
-				<Download />
-			</button>
+			<NButton type="default" @click="toggleDark">
+				<template #icon>
+					<Sun v-if="theme === 'light'" class="light" />
+					<Moon v-if="theme === 'dark'" class="dark" />
+				</template>
+			</NButton>
+			<NButton type="default" @click="$emit('reload-page')">
+				<template #icon>
+					<Reload />
+				</template>
+			</NButton>
+			<NButton title="Download project files" class="download" @click="downloadProject(store)">
+				<template #icon>
+					<Download />
+				</template>
+			</NButton>
 		</div>
 	</nav>
+
+	<NModal v-model:show="showSubmitModal">
+		<NCard
+			style="width: 600px"
+			title="🎉 恭喜你完成了面试题"
+			size="huge"
+			:bordered="false"
+			role="dialog"
+			aria-modal="true"
+		>
+			<NForm
+				ref="formRef"
+				:label-width="80"
+				:model="formValue"
+				:rules="{
+					username: {
+						required: true,
+						trigger: 'blur',
+						validator: (_, value) => {
+							if (!value.trim()) {
+								console.log(111)
+								return new Error('姓名不能为空')
+							}
+							if (value.length < 2 || value.length > 10) {
+								return new Error('姓名长度应在2到10个字符之间')
+							}
+							return true
+						}
+					}
+				}"
+			>
+				<NFormItem label="姓名" path="username">
+					<NInput v-model:value.trim="formValue.username" placeholder="输入姓名" />
+				</NFormItem>
+			</NForm>
+			<NAlert class="my-4" title="注意" type="warning">
+				<p>1. 请确保填写正确的姓名, 这需要与您简历上的姓名一致</p>
+				<p>2. 只能提交一次, 请检查好后提交</p>
+			</NAlert>
+			<div class="flex justify-center mt-2">
+				<NButton class="px-10" type="success" @click="handleSubmit" :loading="isLoading">
+					<template #icon>
+						<Icon icon="material-symbols:local-post-office-rounded"></Icon>
+					</template>
+					提交
+				</NButton>
+			</div>
+		</NCard>
+	</NModal>
 </template>
 
 <style>
@@ -71,17 +182,11 @@
 		--btn-bg: #eee;
 
 		color: var(--base);
-		height: var(--nav-height);
-		box-sizing: border-box;
-		padding: 0 1em;
-		background-color: var(--bg);
 		border-top: 3px solid var(--green);
 		border-bottom: 1px solid var(--border);
-		/* box-shadow: 0 0 4px ; */
 		position: relative;
-		z-index: 999;
-		display: flex;
-		justify-content: space-between;
+		z-index: 10;
+		height: var(--nav-height);
 	}
 
 	.dark nav {
@@ -94,134 +199,5 @@
 
 		box-shadow: none;
 		border-bottom: 1px solid var(--border);
-	}
-
-	h1 {
-		font-weight: 500;
-		display: inline-flex;
-		place-items: center;
-	}
-
-	h1 img {
-		height: 24px;
-		margin-right: 10px;
-	}
-
-	@media (max-width: 560px) {
-		h1 span {
-			font-size: 0.9em;
-		}
-	}
-
-	@media (max-width: 520px) {
-		h1 span {
-			display: none;
-		}
-	}
-
-	.links {
-		display: flex;
-	}
-
-	.toggle-prod span,
-	.toggle-ssr span,
-	.toggle-autosave span {
-		font-size: 12px;
-		border-radius: 4px;
-		padding: 4px 6px;
-	}
-
-	.toggle-prod span {
-		background: var(--green);
-		color: #fff;
-	}
-
-	.toggle-prod.prod span {
-		background: var(--purple);
-	}
-
-	.toggle-ssr span,
-	.toggle-autosave span {
-		background-color: var(--btn-bg);
-	}
-
-	.toggle-ssr.enabled span,
-	.toggle-autosave.enabled span {
-		color: #fff;
-		background-color: var(--green);
-	}
-
-	.toggle-dark svg {
-		width: 18px;
-		height: 18px;
-	}
-
-	.toggle-dark .dark,
-	.dark .toggle-dark .light {
-		display: none;
-	}
-
-	.dark .toggle-dark .dark {
-		display: inline-block;
-	}
-
-	.links button,
-	.links .github {
-		padding: 1px 6px;
-		color: var(--btn);
-	}
-
-	.links button:hover,
-	.links .github:hover {
-		color: var(--highlight);
-	}
-
-	.version:hover .active-version::after {
-		border-top-color: var(--btn);
-	}
-
-	.dark .version:hover .active-version::after {
-		border-top-color: var(--highlight);
-	}
-
-	.versions {
-		display: none;
-		position: absolute;
-		left: 0;
-		top: 40px;
-		background-color: var(--bg-light);
-		border: 1px solid var(--border);
-		border-radius: 4px;
-		list-style-type: none;
-		padding: 8px;
-		margin: 0;
-		width: 200px;
-		max-height: calc(100vh - 70px);
-		overflow: scroll;
-	}
-
-	.versions a {
-		display: block;
-		padding: 6px 12px;
-		text-decoration: none;
-		cursor: pointer;
-		color: var(--base);
-	}
-
-	.versions a:hover {
-		color: var(--green);
-	}
-
-	.versions.expanded {
-		display: block;
-	}
-
-	.links > * {
-		display: flex;
-		align-items: center;
-	}
-
-	.links > * + * {
-		margin-left: 4px;
 	}
 </style>

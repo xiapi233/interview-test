@@ -4,6 +4,7 @@
 	import type { SFCOptions } from '@vue/repl'
 	import Monaco from '@vue/repl/monaco-editor'
 	import { ref, watchEffect, onMounted, computed } from 'vue'
+	import { useDark, useSessionStorage, useToggle } from '@vueuse/core'
 
 	const replRef = ref<InstanceType<typeof Repl>>()
 
@@ -18,6 +19,9 @@
 	const autoSave = ref(true)
 
 	const { productionMode, vueVersion, importMap } = useVueImportMap({})
+
+	let hash = location.hash.slice(1)
+	const state = useSessionStorage('playground-serialized-state', hash, {})
 
 	// enable experimental features
 	const sfcOptions = computed(
@@ -38,17 +42,17 @@
 			}
 		})
 	)
-	let hash = location.hash.slice(1)
 
 	const store = useStore(
 		{
 			builtinImportMap: importMap,
 			vueVersion,
-			sfcOptions
+			sfcOptions,
+			showOutput: ref(false)
 		},
-		hash
+		state.value
 	)
-  // @ts-ignore
+	// @ts-ignore
 	globalThis.store = store
 
 	// persist state
@@ -57,54 +61,56 @@
 			.serialize()
 			.replace(/^#/, useSSRMode.value ? `#__SSR__` : `#`)
 			.replace(/^#/, productionMode.value ? `#__PROD__` : `#`)
-		history.replaceState({}, '', newHash)
+		// history.replaceState({}, '', newHash)
+		state.value = newHash
 	})
 
 	function reloadPage() {
 		replRef.value?.reload()
 	}
 
-	const theme = ref<'dark' | 'light'>('dark')
-	function toggleTheme(isDark: boolean) {
-		theme.value = isDark ? 'dark' : 'light'
-	}
-	onMounted(() => {
-		const cls = document.documentElement.classList
-		toggleTheme(cls.contains('dark'))
+	const isDark = useDark({
+		selector: 'html'
+	})
+	const toggleTheme = useToggle(isDark)
+	const theme = computed(() => (isDark.value ? 'dark' : 'light'))
 
+	onMounted(() => {
 		// @ts-expect-error process shim for old versions of @vue/compiler-sfc dependency
 		window.process = { env: {} }
 	})
 </script>
 
 <template>
-	<Header :store="store" :theme="theme" @toggle-theme="toggleTheme" @reload-page="reloadPage" />
-	<Repl
-		ref="replRef"
-		:theme="theme"
-		:editor="Monaco"
-		@keydown.ctrl.s.prevent
-		@keydown.meta.s.prevent
-		:ssr="useSSRMode"
-		:model-value="autoSave"
-		:editorOptions="{ autoSaveText: false }"
-		:store="store"
-		:showCompileOutput="true"
-		:autoResize="true"
-		:clearConsole="false"
-		:preview-options="{
-			customCode: {
-				importCode: `import { initCustomFormatter } from 'vue'`,
-				useCode: `if (window.devtoolsFormatters) {
+	<div class="playground h-screen">
+		<Header :store="store" :theme="theme" @toggle-theme="toggleTheme" @reload-page="reloadPage" />
+		<Repl
+			ref="replRef"
+			:theme="theme"
+			:editor="Monaco"
+			@keydown.ctrl.s.prevent
+			@keydown.meta.s.prevent
+			:ssr="useSSRMode"
+			:model-value="autoSave"
+			:editorOptions="{ autoSaveText: false }"
+			:store="store"
+			:showCompileOutput="false"
+			:autoResize="true"
+			:clearConsole="false"
+			:preview-options="{
+				customCode: {
+					importCode: `import { initCustomFormatter } from 'vue'`,
+					useCode: `if (window.devtoolsFormatters) {
     const index = window.devtoolsFormatters.findIndex((v) => v.__vue_custom_formatter)
     window.devtoolsFormatters.splice(index, 1)
     initCustomFormatter()
   } else {
     initCustomFormatter()
   }`
-			}
-		}"
-	/>
+				}
+			}"
+		/>
+	</div>
 </template>
 
 <style>

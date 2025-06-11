@@ -1,5 +1,5 @@
 <template>
-	<video controls>
+	<video controls controlsList="nodownload " disablepictureinpicture>
 		<source :src="demoUrl" type="video/mp4" />
 	</video>
 </template>
@@ -10,7 +10,7 @@
 
 <style scoped>
 	video {
-		max-width: 100%;
+		max-width: 300px;
 		height: auto;
 	}
 </style>

@@ -2,13 +2,20 @@
 	import { MDXProvider } from '@mdx-js/vue'
 	import { RouterView } from 'vue-router'
 	import { Playground } from '@vue/sfc-playground'
-	import { ref } from 'vue'
-	import { NButton } from 'naive-ui'
+	import {
+		NButton,
+		NSkeleton,
+		NModalProvider,
+		NMessageProvider,
+		NConfigProvider,
+		darkTheme,
+		lightTheme
+	} from 'naive-ui'
 	import { Icon } from '@iconify/vue'
+	import { useDark } from '@vueuse/core'
 
-	const hash = ref(window.location.hash)
-	window.addEventListener('hashchange', () => {
-		hash.value = location.hash
+	const isDark = useDark({
+		selector: 'html'
 	})
 	function scrollToEnd() {
 		const content = document.documentElement
@@ -22,28 +29,39 @@
 </script>
 
 <template>
-	<MDXProvider>
-		<div class="markdown-body">
-			<div class="content">
-				<!-- <Suspense>
-					<template #default> -->
-				<RouterView />
-				<!-- </template> -->
-				<!-- <template #fallback>
-						<span style="color: #f90">loading....</span>
-					</template> -->
-				<!-- </Suspense> -->
-			</div>
-			<NButton class="m-6 mt-2 " type="success" @click="scrollToEnd">
-				<template #icon>
-					<Icon class="animate-bounce" icon="material-symbols-light:arrow-downward"></Icon>
-				</template>
-				Coding in Playground
-			</NButton>
-			<span></span>
-		</div>
-		<Playground v-if="hash.length"></Playground>
-	</MDXProvider>
+	<NConfigProvider :theme="isDark ? darkTheme : lightTheme">
+		<NMessageProvider>
+			<NModalProvider>
+				<MDXProvider>
+					<div class="markdown-body" :data-theme="isDark ? 'dark' : 'light'">
+						<div class="content">
+							<Suspense>
+								<template #default>
+									<RouterView />
+								</template>
+								<template #fallback>
+									<div class="flex flex-col h-screen">
+										<NSkeleton height="40px" width="33%" />
+										<NSkeleton height="40px" width="66%" :sharp="false" />
+										<NSkeleton height="40px" round />
+										<NSkeleton height="40px" circle />
+									</div>
+								</template>
+							</Suspense>
+						</div>
+						<NButton class="m-6 mt-2" type="success" @click="scrollToEnd">
+							<template #icon>
+								<Icon class="animate-bounce" icon="material-symbols:arrow-downward-rounded"></Icon>
+							</template>
+							Coding in Playground
+						</NButton>
+						<span></span>
+					</div>
+					<Playground />
+				</MDXProvider>
+			</NModalProvider>
+		</NMessageProvider>
+	</NConfigProvider>
 </template>
 
 <style>
