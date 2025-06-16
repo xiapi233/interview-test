@@ -8,10 +8,11 @@
 	import { useSubmit } from './hooks/useSubmit'
 	import { NButton, NModal, NForm, NCard, NInput, NFormItem, NAlert } from 'naive-ui'
 	import { Icon } from '@iconify/vue'
-	import { useEventListener, useSessionStorage } from '@vueuse/core'
+	import { useEventListener } from '@vueuse/core'
 	import { ref, useTemplateRef } from 'vue'
 	import { useDateFormat, useNow } from '@vueuse/core'
 	import { useLeaveWindowCounter } from './hooks/useLeaveWindowCounter'
+	import { useCryptSessionStorage } from './hooks/useCryptSessionStorage'
 
 	const props = defineProps<{
 		store: ReplStore
@@ -20,11 +21,11 @@
 	const emit = defineEmits(['toggle-theme', 'reload-page'])
 
 	const formatted = useDateFormat(useNow(), 'YYYY-MM-DD HH:mm:ss')
-	const startTime = useSessionStorage('playground-test-start-time', formatted.value)
-	const state = useSessionStorage('playground-serialized-state', '')
-	const isSubmited = useSessionStorage('playground-has-submitted', false)
-	const typeCount = useSessionStorage('playground-type-count', 0)
-	const leaveWindowCount = useSessionStorage('playground-leave-window-count', 0)
+	const startTime = useCryptSessionStorage('playground-test-start-time', formatted.value)
+	const state = useCryptSessionStorage('playground-serialized-state', '')
+	const isSubmited = useCryptSessionStorage('playground-has-submitted', false)
+	const typeCount = useCryptSessionStorage('playground-type-count', 0)
+	const leaveWindowCount = useCryptSessionStorage('playground-leave-window-count', 0)
 
 	useLeaveWindowCounter(leaveWindowCount)
 

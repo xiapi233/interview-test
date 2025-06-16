@@ -4,7 +4,8 @@
 	import type { SFCOptions } from '@vue/repl'
 	import Monaco from '@vue/repl/monaco-editor'
 	import { ref, watchEffect, onMounted, computed } from 'vue'
-	import { useDark, useSessionStorage, useToggle } from '@vueuse/core'
+	import { useDark, useToggle } from '@vueuse/core'
+	import { useCryptSessionStorage } from './hooks/useCryptSessionStorage'
 
 	const replRef = ref<InstanceType<typeof Repl>>()
 
@@ -20,8 +21,7 @@
 
 	const { productionMode, vueVersion, importMap } = useVueImportMap({})
 
-	let hash = location.hash.slice(1)
-	const state = useSessionStorage('playground-serialized-state', hash, {})
+	const hash = useCryptSessionStorage('playground-serialized-state', location.hash.slice(1))
 
 	// enable experimental features
 	const sfcOptions = computed(
@@ -50,7 +50,7 @@
 			sfcOptions,
 			showOutput: ref(false)
 		},
-		state.value
+		hash.value
 	)
 	// @ts-ignore
 	globalThis.store = store
@@ -61,8 +61,8 @@
 			.serialize()
 			.replace(/^#/, useSSRMode.value ? `#__SSR__` : `#`)
 			.replace(/^#/, productionMode.value ? `#__PROD__` : `#`)
-		// history.replaceState({}, '', newHash)
-		state.value = newHash
+
+		hash.value = newHash
 	})
 
 	function reloadPage() {
