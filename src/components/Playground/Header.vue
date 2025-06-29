@@ -46,7 +46,7 @@
 				const titleTime = useDateFormat(now, 'YYYY-MM-DD')
 				const time = Math.floor((new Date().getTime() - new Date(startTime.value).getTime()) / 60000)
 
-				await submit(
+				submit(
 					`${titleTime.value} - 面试题 - [${formValue.value.username}]`,
 					[
 						`<p>面试者姓名: ${formValue.value.username}</p>`,
@@ -66,9 +66,10 @@
 						`<hr />`,
 						`<p>在线预览链接: <a href="${window.location.href + state.value}">Playground</a></p>`
 					].join('\n')
-				)
-				isSubmited.value = true
-				showSubmitModal.value = false
+				).then(() => {
+					isSubmited.value = true
+					showSubmitModal.value = false
+				})
 			}
 		})
 	}
