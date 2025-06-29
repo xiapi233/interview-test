@@ -3,11 +3,11 @@
 	import { Repl, useStore, useVueImportMap } from '@vue/repl'
 	import type { SFCOptions } from '@vue/repl'
 	import Monaco from '@vue/repl/monaco-editor'
-	import { ref, watchEffect, onMounted, computed } from 'vue'
+	import { ref, watchEffect, onMounted, computed, useTemplateRef } from 'vue'
 	import { useDark, useToggle } from '@vueuse/core'
-	import { useCryptSessionStorage } from './hooks/useCryptSessionStorage'
+	import { useCryptSessionStorage } from '../../hooks/useCryptSessionStorage'
 
-	const replRef = ref<InstanceType<typeof Repl>>()
+	const replRef = useTemplateRef<InstanceType<typeof Repl>>('replRef')
 
 	const setVH = () => {
 		document.documentElement.style.setProperty('--vh', window.innerHeight + `px`)
@@ -20,7 +20,6 @@
 	const autoSave = ref(true)
 
 	const { productionMode, vueVersion, importMap } = useVueImportMap({})
-
 	const hash = useCryptSessionStorage('playground-serialized-state', location.hash.slice(1))
 
 	// enable experimental features
@@ -57,11 +56,10 @@
 
 	// persist state
 	watchEffect(() => {
-		const newHash = store
-			.serialize()
-			.replace(/^#/, useSSRMode.value ? `#__SSR__` : `#`)
-			.replace(/^#/, productionMode.value ? `#__PROD__` : `#`)
-
+    const newHash = store
+    .serialize()
+    .replace(/^#/, useSSRMode.value ? `#__SSR__` : `#`)
+    .replace(/^#/, productionMode.value ? `#__PROD__` : `#`)
 		hash.value = newHash
 	})
 
@@ -95,9 +93,16 @@
 			:editorOptions="{ autoSaveText: false }"
 			:store="store"
 			:showCompileOutput="false"
+			:showSsrOutput="useSSRMode"
+			:showOpenSourceMap="true"
 			:autoResize="true"
 			:clearConsole="false"
 			:preview-options="{
+// 				headHTML: `<script>
+//           const tailwindScript = document.createElement('script')
+// tailwindScript.setAttribute('src', 'https://cdn.tailwindcss.com')
+// document.head.appendChild(tailwindScript)
+//         </script>`,
 				customCode: {
 					importCode: `import { initCustomFormatter } from 'vue'`,
 					useCode: `if (window.devtoolsFormatters) {

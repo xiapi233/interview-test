@@ -15,8 +15,6 @@
 	},
 	"dependencies": {
 		"@iconify/vue": "^5.0.0",
-		"@nexus/vite-plugin-prevent-debug": "workspace:*",
-		"@vue/sfc-playground": "workspace:*",
 		"@vueuse/core": "^13.3.0",
 		"github-markdown-css": "^5.8.1",
 		"nodemailer": "^7.0.3",
@@ -41,9 +39,14 @@
 		"tsd": "^0.32.0",
 		"typescript": "~5.8.3",
 		"unplugin-vue-router": "^0.12.0",
-		"vite": "catalog:",
 		"vite-plugin-markdown": "^2.2.0",
 		"vitest": "^3.2.3",
-		"vue-tsc": "^2.2.10"
+		"vue-tsc": "^2.2.10",
+		"@types/file-saver": "^2.0.7",
+		"vite": "catalog:",
+		"@vue/repl": "^4.6.1",
+		"file-saver": "^2.0.5",
+		"jszip": "^3.10.1",
+		"vue": "catalog:"
 	}
 }

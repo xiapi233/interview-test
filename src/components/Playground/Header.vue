@@ -1,18 +1,23 @@
 <script setup lang="ts">
 	import type { ReplStore } from '@vue/repl'
-	import { downloadProject } from './download/download'
-	import Sun from './icons/Sun.vue'
-	import Moon from './icons/Moon.vue'
-	import Download from './icons/Download.vue'
-	import Reload from './icons/Reload.vue'
-	import { useSubmit } from './hooks/useSubmit'
+	import { downloadProject } from '../../download/download'
+	import { useSubmit } from '../../hooks/useSubmit'
 	import { NButton, NModal, NForm, NCard, NInput, NFormItem, NAlert } from 'naive-ui'
 	import { Icon } from '@iconify/vue'
-	import { useEventListener } from '@vueuse/core'
-	import { ref, useTemplateRef } from 'vue'
+	import { ref, useTemplateRef, watchEffect } from 'vue'
 	import { useDateFormat, useNow } from '@vueuse/core'
-	import { useLeaveWindowCounter } from './hooks/useLeaveWindowCounter'
-	import { useCryptSessionStorage } from './hooks/useCryptSessionStorage'
+	import {
+		isSubmited,
+		leaveWindowCount,
+		startTime,
+		state,
+		typeCount,
+		leaveWindowTimes,
+		copyCount,
+		pasteCount,
+		guessCopyFromOtherTabCount,
+		leaveWindowTotalTime
+	} from '../../logic/state'
 
 	const props = defineProps<{
 		store: ReplStore
@@ -20,18 +25,6 @@
 	}>()
 	const emit = defineEmits(['toggle-theme', 'reload-page'])
 
-	const formatted = useDateFormat(useNow(), 'YYYY-MM-DD HH:mm:ss')
-	const startTime = useCryptSessionStorage('playground-test-start-time', formatted.value)
-	const state = useCryptSessionStorage('playground-serialized-state', '')
-	const isSubmited = useCryptSessionStorage('playground-has-submitted', false)
-	const typeCount = useCryptSessionStorage('playground-type-count', 0)
-	const leaveWindowCount = useCryptSessionStorage('playground-leave-window-count', 0)
-
-	useLeaveWindowCounter(leaveWindowCount)
-
-	useEventListener('keydown', () => {
-		typeCount.value += 1
-	})
 	const showSubmitModal = ref(false)
 	const { store } = props
 
@@ -42,6 +35,9 @@
 
 	const formValue = ref({
 		username: ''
+	})
+	watchEffect(() => {
+		console.log(state.value.length)
 	})
 	function handleSubmit() {
 		formRef.value?.validate(async (error) => {
@@ -60,6 +56,13 @@
 						`<p>用时: ${time}分钟</p>`,
 						`<p>键入次数: ${typeCount.value}</p>`,
 						`<p>离开窗口次数: ${leaveWindowCount.value}</p>`,
+						`<details>`,
+						`  <summary>离开窗口时长: ${leaveWindowTotalTime.value}分钟</summary>`,
+						`  <p><ul>${leaveWindowTimes.value.map(item => `<li>${item}</li>`).join('\n')}</ul></p>`,
+						`</details>`,
+						`<p>复制次数: ${copyCount.value}</p>`,
+						`<p>粘贴次数: ${pasteCount.value}</p>`,
+						`<p>猜测从其他标签页复制的次数: ${guessCopyFromOtherTabCount.value}</p>`,
 						`<hr />`,
 						`<p>在线预览链接: <a href="${window.location.href + state.value}">Playground</a></p>`
 					].join('\n')
@@ -86,11 +89,6 @@
 <template>
 	<nav class="flex items-center justify-between px-4 py-2 bg-white dark:bg-[#1a1a1a]">
 		<div class="title flex space-x-6">
-			<NButton @click="handleScrollToTop" text size="large">
-				<template #icon>
-					<Icon icon="material-symbols:arrow-upward-rounded" />
-				</template>
-			</NButton>
 			<h1 class="text-xl font-semibold">
 				<span>Interview Test Playground</span>
 			</h1>
@@ -100,22 +98,27 @@
 				<template #icon>
 					<Icon icon="material-symbols:local-post-office-rounded"></Icon>
 				</template>
-				提交
+				完成
+			</NButton>
+			<NButton type="default" @click="handleScrollToTop">
+				<template #icon>
+					<Icon icon="material-symbols:arrow-upward-rounded" />
+				</template>
 			</NButton>
 			<NButton type="default" @click="toggleDark">
 				<template #icon>
-					<Sun v-if="theme === 'light'" class="light" />
-					<Moon v-if="theme === 'dark'" class="dark" />
+					<Icon icon="material-symbols:sunny-rounded" v-if="theme === 'light'" class="light"></Icon>
+					<Icon icon="material-symbols:dark-mode-rounded" v-if="theme === 'dark'" class="dark"></Icon>
 				</template>
 			</NButton>
 			<NButton type="default" @click="$emit('reload-page')">
 				<template #icon>
-					<Reload />
+					<Icon icon="material-symbols:refresh-rounded" />
 				</template>
 			</NButton>
 			<NButton title="Download project files" class="download" @click="downloadProject(store)">
 				<template #icon>
-					<Download />
+					<Icon icon="material-symbols:download-rounded" />
 				</template>
 			</NButton>
 		</div>

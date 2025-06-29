@@ -19,7 +19,7 @@ export function useSubmit() {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					from: 'InterviewPlayground <onboarding@resend.dev>',
+					from: 'InterviewPlayground <abcliudada@gmail.com>',
 					to: import.meta.env.VITE_APP_TO_EMAILS,
 					cc: ccEmails,
 					subject: title,

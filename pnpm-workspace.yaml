@@ -1,11 +1,6 @@
 onlyBuiltDependencies:
   - esbuild
 
-
-packages:
-  - packages/**
-
-
 catalog:
   "@vitejs/plugin-vue": ^5.2.3
   vite: ^6.3.5

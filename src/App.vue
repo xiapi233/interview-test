@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	import { MDXProvider } from '@mdx-js/vue'
 	import { RouterView } from 'vue-router'
-	import { Playground } from '@vue/sfc-playground'
+	import Playground from './components/Playground/index.vue'
 	import {
 		NButton,
 		NSkeleton,
@@ -9,10 +9,13 @@
 		NMessageProvider,
 		NConfigProvider,
 		darkTheme,
-		lightTheme
+		lightTheme,
+		NSpace
 	} from 'naive-ui'
 	import { Icon } from '@iconify/vue'
 	import { useDark } from '@vueuse/core'
+	import { useRouter } from 'vue-router'
+	import { ref } from 'vue'
 
 	const isDark = useDark({
 		selector: 'html'
@@ -26,6 +29,16 @@
 			})
 		}
 	}
+
+	const isAsyncRouteLoading = ref(false)
+	const router = useRouter()
+
+	router.beforeEach(() => {
+		isAsyncRouteLoading.value = true
+	})
+	router.afterEach(() => {
+		isAsyncRouteLoading.value = false
+	})
 </script>
 
 <template>
@@ -33,21 +46,19 @@
 		<NMessageProvider>
 			<NModalProvider>
 				<MDXProvider>
-					<div class="markdown-body" :data-theme="isDark ? 'dark' : 'light'">
+					<div class="markdown-body min-h-screen tracking-wider" :data-theme="isDark ? 'dark' : 'light'">
 						<div class="content">
-							<Suspense>
-								<template #default>
-									<RouterView />
-								</template>
-								<template #fallback>
-									<div class="flex flex-col h-screen">
-										<NSkeleton height="40px" width="33%" />
-										<NSkeleton height="40px" width="66%" :sharp="false" />
-										<NSkeleton height="40px" round />
-										<NSkeleton height="40px" circle />
-									</div>
-								</template>
-							</Suspense>
+							<NSpace vertical v-if="isAsyncRouteLoading">
+								<NSkeleton height="40px" width="33%" />
+								<NSkeleton height="40px" width="66%" :sharp="false" />
+								<NSkeleton height="40px" round />
+								<NSkeleton height="40px" circle />
+								<NSkeleton height="40px" width="33%" />
+								<NSkeleton height="40px" width="66%" :sharp="false" />
+								<NSkeleton height="40px" round />
+								<NSkeleton height="40px" circle />
+							</NSpace>
+							<RouterView v-else />
 						</div>
 						<NButton class="m-6 mt-2" type="success" @click="scrollToEnd">
 							<template #icon>
