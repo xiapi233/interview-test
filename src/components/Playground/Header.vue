@@ -4,7 +4,7 @@
 	import { useSubmit } from '../../hooks/useSubmit'
 	import { NButton, NModal, NForm, NCard, NInput, NFormItem, NAlert } from 'naive-ui'
 	import { Icon } from '@iconify/vue'
-	import { ref, useTemplateRef, watchEffect } from 'vue'
+	import { ref, useTemplateRef } from 'vue'
 	import { useDateFormat, useNow } from '@vueuse/core'
 	import {
 		isSubmited,
@@ -16,7 +16,8 @@
 		copyCount,
 		pasteCount,
 		guessCopyFromOtherTabCount,
-		leaveWindowTotalTime
+		leaveWindowTotalTime,
+		codeLength
 	} from '../../logic/state'
 
 	const props = defineProps<{
@@ -36,9 +37,7 @@
 	const formValue = ref({
 		username: ''
 	})
-	watchEffect(() => {
-		console.log(state.value.length)
-	})
+
 	function handleSubmit() {
 		formRef.value?.validate(async (error) => {
 			if (!error) {
@@ -55,10 +54,11 @@
 						`<p>提交时间: ${submitTime.value}</p>`,
 						`<p>用时: ${time}分钟</p>`,
 						`<p>键入次数: ${typeCount.value}</p>`,
+						`<p>代码长度: ${codeLength.value}</p>`,
 						`<p>离开窗口次数: ${leaveWindowCount.value}</p>`,
 						`<details>`,
 						`  <summary>离开窗口时长: ${leaveWindowTotalTime.value}分钟</summary>`,
-						`  <p><ul>${leaveWindowTimes.value.map(item => `<li>${item}</li>`).join('\n')}</ul></p>`,
+						`  <p><ul>${leaveWindowTimes.value.map((item) => `<li>${item}</li>`).join('\n')}</ul></p>`,
 						`</details>`,
 						`<p>复制次数: ${copyCount.value}</p>`,
 						`<p>粘贴次数: ${pasteCount.value}</p>`,
@@ -84,6 +84,7 @@
 			})
 		}
 	}
+	const isViewMode = window.location.hash.trim().replace(/^#/, '') !== ''
 </script>
 
 <template>
@@ -94,7 +95,7 @@
 			</h1>
 		</div>
 		<div class="buttons flex space-x-4">
-			<NButton type="success" :disabled="isSubmited" @click="showSubmitModal = true">
+			<NButton v-if="!isViewMode" :disabled="isSubmited" type="success" @click="showSubmitModal = true">
 				<template #icon>
 					<Icon icon="material-symbols:local-post-office-rounded"></Icon>
 				</template>

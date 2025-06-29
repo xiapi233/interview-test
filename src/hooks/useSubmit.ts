@@ -32,6 +32,7 @@ export function useSubmit() {
 			message.success('提交成功！')
 			console.log('Email sent:', result)
 		} catch (error) {
+			message.error('提交失败！请重试或联系面试官。')
 			console.error('Error sending email:', error)
 		}
 	}

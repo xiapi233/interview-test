@@ -8,7 +8,13 @@ export const formatted = useDateFormat(useNow(), 'YYYY-MM-DD HH:mm:ss')
 // 开始时间
 export const startTime = useCryptSessionStorage('playground-test-start-time', formatted.value)
 // 当前的代码
-export const state = useCryptSessionStorage('playground-serialized-state', '')
+export const state = useCryptSessionStorage(
+	'playground-serialized-state',
+	location.hash.slice(1) ||
+		'eNp9UstOwzAQ/BXjS0AqiRCcSloJUCXgAAiQuPhSpdvUxbEte10qRfl31i59gGhu2Zmd1XgmLb+xNl8F4ENe+spJi8wDBjsWWjbWOGT3oJT5ME7N2NyZhmV5sYeiNLsWuiw2YpLRgNBYNUWgibHy4EBBSFkc0HzA0VdGz2WdL73RZKONIsEr01ipwD1blEZ7wYcsMZGb0sGvx4ShCzDY4tUCqs9/8KVfR0zwFwce3AoE33E4dTXghp68PcGavndkY2ZB0XYP+QreqBA9btZug56R7YO95PYhhSl1/e4nawTtt4+KRuNml/YFp0Dvep6+t3uZXyWd0B2l+LuS4222zMGcdT9VxvZiY9SAR9b4mo0if5qlcyzdO8nO+vtdXIzbNom7rixoSqjUNiBbnVNKoEaUlq8F//sD8O4bP7jW4g=='
+)
+// 当前代码长度
+export const codeLength = useCryptSessionStorage('playground-code-length', 0)
 // 是否提交
 export const isSubmited = useCryptSessionStorage('playground-has-submitted', false)
 // 键入次数
@@ -20,10 +26,12 @@ export const { leaveCount: leaveWindowCount, leaveTimes: leaveWindowTimes } = us
 )
 // 离开窗口总时间
 export const leaveWindowTotalTime = computed(() => {
-	leaveWindowTimes.value.reduce((total, cur) => {
-		total += parseFloat(cur) || 0
-		return total
-	}, 0)
+	return Math.round(
+		leaveWindowTimes.value.reduce((total, cur) => {
+			total += parseFloat(cur) || 0
+			return total
+		}, 0)
+	)
 })
 // 粘贴次数
 export const pasteCount = useCryptSessionStorage('playground-paste-count', 0)

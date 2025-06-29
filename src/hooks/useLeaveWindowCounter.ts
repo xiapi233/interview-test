@@ -11,6 +11,7 @@ export function useLeaveWindowCounter(initialCount: Ref<number> | number, initia
 			leaveStartTime = Date.now()
 		} else if (leaveStartTime) {
 			const leaveDuration = Date.now() - leaveStartTime
+			if (leaveDuration < 1000 * 5) return
 			const formattedDuration = leaveDuration / 1000 / 60
 			leaveTimes.value.push(`${formattedDuration.toFixed(1)}`)
 		}

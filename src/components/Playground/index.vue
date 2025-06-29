@@ -5,8 +5,7 @@
 	import Monaco from '@vue/repl/monaco-editor'
 	import { ref, watchEffect, onMounted, computed, useTemplateRef } from 'vue'
 	import { useDark, useToggle } from '@vueuse/core'
-	import { useCryptSessionStorage } from '../../hooks/useCryptSessionStorage'
-
+	import { state, codeLength } from '../../logic/state'
 	const replRef = useTemplateRef<InstanceType<typeof Repl>>('replRef')
 
 	const setVH = () => {
@@ -20,7 +19,6 @@
 	const autoSave = ref(true)
 
 	const { productionMode, vueVersion, importMap } = useVueImportMap({})
-	const hash = useCryptSessionStorage('playground-serialized-state', location.hash.slice(1))
 
 	// enable experimental features
 	const sfcOptions = computed(
@@ -49,18 +47,28 @@
 			sfcOptions,
 			showOutput: ref(false)
 		},
-		hash.value
+		state.value
 	)
 	// @ts-ignore
 	globalThis.store = store
 
 	// persist state
 	watchEffect(() => {
-    const newHash = store
-    .serialize()
-    .replace(/^#/, useSSRMode.value ? `#__SSR__` : `#`)
-    .replace(/^#/, productionMode.value ? `#__PROD__` : `#`)
-		hash.value = newHash
+		let codeLen = 0
+		Object.values(store.files).map((file) => {
+			if (file.filename.endsWith('.vue') || file.filename.endsWith('.js') || file.filename.endsWith('.ts')) {
+        console.log(file.filename, file.code.length);
+				codeLen += file.code.length
+			}
+		})
+    console.log(codeLen);
+		const newHash = store
+			.serialize()
+			.replace(/^#/, useSSRMode.value ? `#__SSR__` : `#`)
+			.replace(/^#/, productionMode.value ? `#__PROD__` : `#`)
+
+		state.value = newHash
+		codeLength.value = codeLen
 	})
 
 	function reloadPage() {
@@ -98,11 +106,11 @@
 			:autoResize="true"
 			:clearConsole="false"
 			:preview-options="{
-// 				headHTML: `<script>
-//           const tailwindScript = document.createElement('script')
-// tailwindScript.setAttribute('src', 'https://cdn.tailwindcss.com')
-// document.head.appendChild(tailwindScript)
-//         </script>`,
+				// 				headHTML: `<script>
+				//           const tailwindScript = document.createElement('script')
+				// tailwindScript.setAttribute('src', 'https://cdn.tailwindcss.com')
+				// document.head.appendChild(tailwindScript)
+				//         </script>`,
 				customCode: {
 					importCode: `import { initCustomFormatter } from 'vue'`,
 					useCode: `if (window.devtoolsFormatters) {
