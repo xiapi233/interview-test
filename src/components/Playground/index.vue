@@ -57,11 +57,9 @@
 		let codeLen = 0
 		Object.values(store.files).map((file) => {
 			if (file.filename.endsWith('.vue') || file.filename.endsWith('.js') || file.filename.endsWith('.ts')) {
-        console.log(file.filename, file.code.length);
 				codeLen += file.code.length
 			}
 		})
-    console.log(codeLen);
 		const newHash = store
 			.serialize()
 			.replace(/^#/, useSSRMode.value ? `#__SSR__` : `#`)
