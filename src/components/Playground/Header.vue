@@ -17,7 +17,10 @@
 		pasteCount,
 		guessCopyFromOtherTabCount,
 		leaveWindowTotalTime,
-		codeLength
+		codeLength,
+		typeSpaceCount,
+		typeEnterCount,
+		typeDeleteCount
 	} from '../../logic/state'
 
 	const props = defineProps<{
@@ -53,12 +56,21 @@
 						`<p>开始时间: ${startTime.value}</p>`,
 						`<p>提交时间: ${submitTime.value}</p>`,
 						`<p>用时: ${time}分钟</p>`,
-						`<p>键入次数: ${typeCount.value}</p>`,
 						`<p>代码长度: ${codeLength.value}</p>`,
+						`<details>`,
+						`  <summary>键入次数: ${typeCount.value}</summary>`,
+						`  <ul>${[
+							`<li>空格键: ${typeSpaceCount.value}次</li>`,
+							`<li>回车键: ${typeEnterCount.value}次</li>`,
+							`<li>删除键: ${typeDeleteCount.value}次</li>`
+						].join('\n')}</ul>`,
+						`</details>`,
+						`<p>代码长度: ${codeLength.value}</p>`,
+						`</details>`,
 						`<p>离开窗口次数: ${leaveWindowCount.value}</p>`,
 						`<details>`,
 						`  <summary>离开窗口时长: ${leaveWindowTotalTime.value}分钟</summary>`,
-						`  <p><ul>${leaveWindowTimes.value.map((item) => `<li>${item}</li>`).join('\n')}</ul></p>`,
+						`  <p><ol>${leaveWindowTimes.value.map((item) => `<li>${item}</li>`).join('\n')}</ol></p>`,
 						`</details>`,
 						`<p>复制次数: ${copyCount.value}</p>`,
 						`<p>粘贴次数: ${pasteCount.value}</p>`,

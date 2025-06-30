@@ -11,7 +11,7 @@ export const startTime = useCryptSessionStorage('playground-test-start-time', fo
 export const state = useCryptSessionStorage(
 	'playground-serialized-state',
 	location.hash.slice(1) ||
-		'eNp9UstOwzAQ/BXjS0AqiRCcSloJUCXgAAiQuPhSpdvUxbEte10qRfl31i59gGhu2Zmd1XgmLb+xNl8F4ENe+spJi8wDBjsWWjbWOGT3oJT5ME7N2NyZhmV5sYeiNLsWuiw2YpLRgNBYNUWgibHy4EBBSFkc0HzA0VdGz2WdL73RZKONIsEr01ipwD1blEZ7wYcsMZGb0sGvx4ShCzDY4tUCqs9/8KVfR0zwFwce3AoE33E4dTXghp68PcGavndkY2ZB0XYP+QreqBA9btZug56R7YO95PYhhSl1/e4nawTtt4+KRuNml/YFp0Dvep6+t3uZXyWd0B2l+LuS4222zMGcdT9VxvZiY9SAR9b4mo0if5qlcyzdO8nO+vtdXIzbNom7rixoSqjUNiBbnVNKoEaUlq8F//sD8O4bP7jW4g=='
+		'eNp9Us9rFDEU/ldiLqtQZxA91WlBpaAeVFTwkssym51OnUlCklkHhgEFdYtt3XqwUKuwYHteT1Y7q3/NxrGn/gu+ZPpjLWUvIfm+7328974U+JYQXi+jeB4HKpSx0EhRnYlFwnwf/R3tm9Xh4fZuvXsw+b02qb7Ww1dm83093jJvt53kaLyGzLuhGeybwcis7pjqwPodjde9FWVPrf5s9SfVd7jXOz/M6Kf5/M18eYk8P89zK0Vm/NG82XNuZrBu+lVjU3963VSC8aTaO+xvmA+/zOYGYXEquNToLk0S/ozLpIO6kqeo5flnkHVu3SQs8JuxYCB4aJqKpK0pvBAKpgx8QAJ/isZzWKuQs24cwSCcwYIKW0RwyFMRJ1Q+FDrmTBE8jxxjuTYYvrjvMC0zOneCh8s0fH4BvqJyixH8SFJFZY8SfMrptoyobuilJw9oDvdTMuWdLAH1DPIxVTzJbI+N7HbGOtD2lM51e88tM2bRU7WUa8rUyVC2UassnZ5gWOidGaOftXvdu+HqCCthi/9HcsE/O06zQJJ2UXkcpU3PJgYJKI1SFaEFy19uOTvk/C61rszOd/naYlG44rIMfHg5NGYi06h3FbZEkwXYlooIPv8BcPkPe3g19w=='
 )
 // 当前代码长度
 export const codeLength = useCryptSessionStorage('playground-code-length', 0)
@@ -19,6 +19,10 @@ export const codeLength = useCryptSessionStorage('playground-code-length', 0)
 export const isSubmited = useCryptSessionStorage('playground-has-submitted', false)
 // 键入次数
 export const typeCount = useCryptSessionStorage('playground-type-count', 0)
+export const typeSpaceCount = useCryptSessionStorage('playground-type-space-count', 0)
+export const typeEnterCount = useCryptSessionStorage('playground-type-enter-count', 0)
+export const typeDeleteCount = useCryptSessionStorage('playground-type-delete-count', 0)
+
 // 离开窗口次数与时间
 export const { leaveCount: leaveWindowCount, leaveTimes: leaveWindowTimes } = useLeaveWindowCounter(
 	useCryptSessionStorage('playground-leave-window-count', 0),
