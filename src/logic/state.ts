@@ -48,7 +48,7 @@ useEventListener('keydown', () => {
 	typeCount.value += 1
 })
 
-const { Ctrl_C, Meta_C, Ctrl_V, Meta_V } = useMagicKeys({})
+const { Ctrl_C, Meta_C, Ctrl_V, Meta_V, Space, Delete, Enter } = useMagicKeys({})
 
 watchEffect(() => {
 	if (Ctrl_V.value || Meta_V.value) {
@@ -57,5 +57,15 @@ watchEffect(() => {
 	if (Ctrl_C.value || Meta_C.value) {
 		copyCount.value += 1
 	}
+	if (Space.value) {
+		typeSpaceCount.value += 1
+	}
+	if (Delete.value) {
+		typeDeleteCount.value += 1
+	}
+	if (Enter.value) {
+		typeEnterCount.value += 1
+	}
+  
 	guessCopyFromOtherTabCount.value = clamp(pasteCount.value - copyCount.value, 0, Infinity)
 })
