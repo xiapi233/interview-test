@@ -1,0 +1,442 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`analyzeSession > 会话: [object Object] 1`] = `
+{
+  "flags": [
+    "very-high-typing-speed",
+  ],
+  "isNormal": true,
+  "riskScore": 10,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 2`] = `
+{
+  "flags": [
+    "external-paste",
+    "low-typing-speed",
+  ],
+  "isNormal": false,
+  "riskScore": 40,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 3`] = `
+{
+  "flags": [
+    "external-paste",
+    "low-typing-speed",
+  ],
+  "isNormal": false,
+  "riskScore": 40,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 4`] = `
+{
+  "flags": [
+    "external-paste",
+    "low-typing-speed",
+  ],
+  "isNormal": false,
+  "riskScore": 40,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 5`] = `
+{
+  "flags": [
+    "external-paste",
+    "low-typing-speed",
+  ],
+  "isNormal": false,
+  "riskScore": 40,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 6`] = `
+{
+  "flags": [],
+  "isNormal": true,
+  "riskScore": 0,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 7`] = `
+{
+  "flags": [],
+  "isNormal": true,
+  "riskScore": 0,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 8`] = `
+{
+  "flags": [
+    "external-paste",
+    "low-typing-speed",
+  ],
+  "isNormal": false,
+  "riskScore": 40,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 9`] = `
+{
+  "flags": [
+    "external-paste",
+    "low-typing-speed",
+  ],
+  "isNormal": false,
+  "riskScore": 40,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 10`] = `
+{
+  "flags": [],
+  "isNormal": true,
+  "riskScore": 0,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 11`] = `
+{
+  "flags": [
+    "very-high-typing-speed",
+  ],
+  "isNormal": true,
+  "riskScore": 10,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 12`] = `
+{
+  "flags": [
+    "external-paste",
+  ],
+  "isNormal": true,
+  "riskScore": 20,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 13`] = `
+{
+  "flags": [],
+  "isNormal": true,
+  "riskScore": 0,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 14`] = `
+{
+  "flags": [
+    "very-high-typing-speed",
+  ],
+  "isNormal": true,
+  "riskScore": 10,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 15`] = `
+{
+  "flags": [
+    "external-paste",
+  ],
+  "isNormal": true,
+  "riskScore": 20,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 16`] = `
+{
+  "flags": [],
+  "isNormal": true,
+  "riskScore": 0,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 17`] = `
+{
+  "flags": [],
+  "isNormal": true,
+  "riskScore": 0,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 18`] = `
+{
+  "flags": [],
+  "isNormal": true,
+  "riskScore": 0,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 19`] = `
+{
+  "flags": [],
+  "isNormal": true,
+  "riskScore": 0,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 20`] = `
+{
+  "flags": [
+    "external-paste",
+    "left-window-often",
+  ],
+  "isNormal": false,
+  "riskScore": 40,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 21`] = `
+{
+  "flags": [
+    "external-paste",
+    "left-window-often",
+    "low-typing-speed",
+  ],
+  "isNormal": false,
+  "riskScore": 60,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 22`] = `
+{
+  "flags": [
+    "external-paste",
+    "low-typing-speed",
+  ],
+  "isNormal": false,
+  "riskScore": 40,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 23`] = `
+{
+  "flags": [
+    "external-paste",
+    "left-window-often",
+    "low-typing-speed",
+  ],
+  "isNormal": false,
+  "riskScore": 60,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 24`] = `
+{
+  "flags": [
+    "very-high-typing-speed",
+  ],
+  "isNormal": true,
+  "riskScore": 10,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 25`] = `
+{
+  "flags": [
+    "external-paste",
+  ],
+  "isNormal": true,
+  "riskScore": 20,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 26`] = `
+{
+  "flags": [
+    "external-paste",
+    "left-window-often",
+    "large-code-short-time",
+  ],
+  "isNormal": false,
+  "riskScore": 60,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 27`] = `
+{
+  "flags": [
+    "very-high-typing-speed",
+  ],
+  "isNormal": true,
+  "riskScore": 10,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 28`] = `
+{
+  "flags": [],
+  "isNormal": true,
+  "riskScore": 0,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 29`] = `
+{
+  "flags": [
+    "external-paste",
+    "low-typing-speed",
+  ],
+  "isNormal": false,
+  "riskScore": 40,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 30`] = `
+{
+  "flags": [],
+  "isNormal": true,
+  "riskScore": 0,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 31`] = `
+{
+  "flags": [],
+  "isNormal": true,
+  "riskScore": 0,
+}
+`;
+
+exports[`analyzeSession > 会话: [object Object] 32`] = `
+{
+  "flags": [
+    "very-high-typing-speed",
+  ],
+  "isNormal": true,
+  "riskScore": 10,
+}
+`;
+
+exports[`analyzeSession > 会话: 0 1`] = `true`;
+
+exports[`analyzeSession > 会话: 1 1`] = `false`;
+
+exports[`analyzeSession > 会话: 2 1`] = `false`;
+
+exports[`analyzeSession > 会话: 3 1`] = `false`;
+
+exports[`analyzeSession > 会话: 4 1`] = `false`;
+
+exports[`analyzeSession > 会话: 5 1`] = `true`;
+
+exports[`analyzeSession > 会话: 6 1`] = `true`;
+
+exports[`analyzeSession > 会话: 7 1`] = `false`;
+
+exports[`analyzeSession > 会话: 8 1`] = `false`;
+
+exports[`analyzeSession > 会话: 9 1`] = `true`;
+
+exports[`analyzeSession > 会话: 10 1`] = `true`;
+
+exports[`analyzeSession > 会话: 11 1`] = `true`;
+
+exports[`analyzeSession > 会话: 12 1`] = `true`;
+
+exports[`analyzeSession > 会话: 13 1`] = `true`;
+
+exports[`analyzeSession > 会话: 14 1`] = `true`;
+
+exports[`analyzeSession > 会话: 15 1`] = `true`;
+
+exports[`analyzeSession > 会话: 16 1`] = `true`;
+
+exports[`analyzeSession > 会话: 17 1`] = `true`;
+
+exports[`analyzeSession > 会话: 18 1`] = `true`;
+
+exports[`analyzeSession > 会话: 19 1`] = `false`;
+
+exports[`analyzeSession > 会话: 20 1`] = `false`;
+
+exports[`analyzeSession > 会话: 21 1`] = `false`;
+
+exports[`analyzeSession > 会话: 22 1`] = `false`;
+
+exports[`analyzeSession > 会话: 23 1`] = `true`;
+
+exports[`analyzeSession > 会话: 24 1`] = `true`;
+
+exports[`analyzeSession > 会话: 25 1`] = `false`;
+
+exports[`analyzeSession > 会话: 26 1`] = `true`;
+
+exports[`analyzeSession > 会话: 27 1`] = `true`;
+
+exports[`analyzeSession > 会话: 28 1`] = `false`;
+
+exports[`analyzeSession > 会话: 29 1`] = `true`;
+
+exports[`analyzeSession > 会话: 30 1`] = `true`;
+
+exports[`analyzeSession > 会话: 31 1`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 1`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 2`] = `false`;
+
+exports[`isUserQualified > 会话: [object Object] 3`] = `false`;
+
+exports[`isUserQualified > 会话: [object Object] 4`] = `false`;
+
+exports[`isUserQualified > 会话: [object Object] 5`] = `false`;
+
+exports[`isUserQualified > 会话: [object Object] 6`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 7`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 8`] = `false`;
+
+exports[`isUserQualified > 会话: [object Object] 9`] = `false`;
+
+exports[`isUserQualified > 会话: [object Object] 10`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 11`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 12`] = `false`;
+
+exports[`isUserQualified > 会话: [object Object] 13`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 14`] = `false`;
+
+exports[`isUserQualified > 会话: [object Object] 15`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 16`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 17`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 18`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 19`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 20`] = `false`;
+
+exports[`isUserQualified > 会话: [object Object] 21`] = `false`;
+
+exports[`isUserQualified > 会话: [object Object] 22`] = `false`;
+
+exports[`isUserQualified > 会话: [object Object] 23`] = `false`;
+
+exports[`isUserQualified > 会话: [object Object] 24`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 25`] = `false`;
+
+exports[`isUserQualified > 会话: [object Object] 26`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 27`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 28`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 29`] = `false`;
+
+exports[`isUserQualified > 会话: [object Object] 30`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 31`] = `true`;
+
+exports[`isUserQualified > 会话: [object Object] 32`] = `true`;

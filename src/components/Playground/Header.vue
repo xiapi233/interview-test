@@ -6,22 +6,7 @@
 	import { Icon } from '@iconify/vue'
 	import { ref, useTemplateRef } from 'vue'
 	import { useDateFormat, useNow } from '@vueuse/core'
-	import {
-		isSubmited,
-		leaveWindowCount,
-		startTime,
-		state,
-		typeCount,
-		leaveWindowTimes,
-		copyCount,
-		pasteCount,
-		guessCopyFromOtherTabCount,
-		leaveWindowTotalTime,
-		codeLength,
-		typeSpaceCount,
-		typeEnterCount,
-		typeDeleteCount
-	} from '../../logic/state'
+	import { isSubmited } from '../../logic/state'
 
 	const props = defineProps<{
 		store: ReplStore
@@ -45,40 +30,9 @@
 		formRef.value?.validate(async (error) => {
 			if (!error) {
 				const now = useNow()
-				const submitTime = useDateFormat(now, 'YYYY-MM-DD HH:mm:ss')
 				const titleTime = useDateFormat(now, 'YYYY-MM-DD')
-				const time = Math.floor((new Date().getTime() - new Date(startTime.value).getTime()) / 60000)
 
-				submit(
-					`${titleTime.value} - 面试题 - [${formValue.value.username}]`,
-					[
-						`<p>面试者姓名: ${formValue.value.username}</p>`,
-						`<p>开始时间: ${startTime.value}</p>`,
-						`<p>提交时间: ${submitTime.value}</p>`,
-						`<p>用时: ${time}分钟</p>`,
-						`<p>代码长度: ${codeLength.value}</p>`,
-						`<details>`,
-						`  <summary>键入次数: ${typeCount.value}</summary>`,
-						`  <ul>${[
-							`<li>空格键: ${typeSpaceCount.value}次</li>`,
-							`<li>回车键: ${typeEnterCount.value}次</li>`,
-							`<li>删除键: ${typeDeleteCount.value}次</li>`
-						].join('\n')}</ul>`,
-						`</details>`,
-						`<p>代码长度: ${codeLength.value}</p>`,
-						`</details>`,
-						`<p>离开窗口次数: ${leaveWindowCount.value}</p>`,
-						`<details>`,
-						`  <summary>离开窗口时长: ${leaveWindowTotalTime.value}分钟</summary>`,
-						`  <p><ol>${leaveWindowTimes.value.map((item) => `<li>${item}</li>`).join('\n')}</ol></p>`,
-						`</details>`,
-						`<p>复制次数: ${copyCount.value}</p>`,
-						`<p>粘贴次数: ${pasteCount.value}</p>`,
-						`<p>猜测从其他标签页复制的次数: ${guessCopyFromOtherTabCount.value}</p>`,
-						`<hr />`,
-						`<p>在线预览链接: <a href="${window.location.href + state.value}">Playground</a></p>`
-					].join('\n')
-				).then(() => {
+				submit(titleTime.value, formValue.value.username).then(() => {
 					isSubmited.value = true
 					showSubmitModal.value = false
 				})
